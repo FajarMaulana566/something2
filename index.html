@@ -57,6 +57,17 @@
         50% { transform: translateY(-15px); }
     }
 
+    @keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+}
+.button {
+  animation: wiggle 2s infinite ease-in-out;
+  
+}
+
+
     .button {
         background: #ff4081;
         color: white;
@@ -145,6 +156,7 @@
 @keyframes fly {
     from { transform: translateY(0) rotate(0deg); opacity: 1; }
     to { transform: translateY(-500px) rotate(720deg); opacity: 0; }
+    
 }
     /* Responsif teks */
     @media (max-width: 400px) {
@@ -205,6 +217,8 @@ function buatEmojiTerbang() {
 <!-- Overlay dan Popup -->
 <div id="overlay">
     <div id="popup">
+        <audio id="klikSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bf7e5f1d8c.mp3?filename=pop-94319.mp3"></audio>
+
         <button class="close-btn" onclick="tutupPopup()">×</button>
         <h2>✉️ Untukmu, Gina Kania Maharani ✉️</h2>
         <p>
