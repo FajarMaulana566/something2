@@ -86,12 +86,12 @@
         display: none;
         justify-content: center;
         align-items: center;
-        z-index: 10;
+        z-index: 1000;
         overflow: hidden;
         padding: 20px;
     }
 
-    /* Popup stabil */
+    /* Popup */
     #popup {
         background: #fff;
         border-radius: 20px;
@@ -104,6 +104,8 @@
         transform: scale(0.8);
         opacity: 0;
         transition: transform 0.4s ease, opacity 0.4s ease;
+        position: relative;
+        z-index: 2000;
     }
 
     #overlay.show #popup {
@@ -136,7 +138,7 @@
         font-size: 25px;
         animation: fly 3s linear forwards;
         pointer-events: none;
-        z-index: 5;
+        z-index: 9999; /* 💥 emote di atas popup */
     }
 
     @keyframes fly {
@@ -186,7 +188,9 @@
 </div>
 
 <!-- 🔊 Audio semangat -->
-<audio id="klikSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bf7e5f1d8c.mp3?filename=pop-94319.mp3"></audio>
+<audio id="klikSound" preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bf7e5f1d8c.mp3?filename=pop-94319.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 let emojiInterval;
@@ -194,11 +198,22 @@ let emojiInterval;
 function bukaPopup() {
     const overlay = document.getElementById('overlay');
     const audio = document.getElementById('klikSound');
+
+    // tampilkan popup
     overlay.style.display = 'flex';
     overlay.classList.add('show');
     document.body.style.overflow = 'hidden';
-    audio.currentTime = 0;
-    audio.play();
+
+    // mainkan audio klik
+    try {
+        audio.volume = 0.7;
+        audio.currentTime = 0;
+        audio.play();
+    } catch (e) {
+        console.warn('Audio tidak bisa diputar otomatis:', e);
+    }
+
+    // emote terbang
     emojiInterval = setInterval(() => buatEmojiTerbang(), 400);
 }
 
