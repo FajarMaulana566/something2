@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Semangat Untukmu!</title>
 
-<!-- 🌸 Font dari Google Fonts -->
+<!-- 🌸 Tambahkan font dari Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
 
 <style>
     body {
@@ -75,87 +76,119 @@
         transform: scale(1.05);
     }
 
-    /* Overlay */
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0,0,0,0.6);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        overflow: hidden;
-        padding: 20px;
-    }
+  /* Overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    overflow: hidden;
+    padding: 20px;
+}
 
-    /* Popup */
-    #popup {
-        background: #fff;
-        border-radius: 20px;
-        width: 90%;
-        max-width: 450px;
-        padding: 25px;
-        box-shadow: 0 0 25px rgba(255, 64, 129, 0.5);
-        text-align: center;
-        font-family: 'Quicksand', sans-serif;
-        transform: scale(0.8);
-        opacity: 0;
-        transition: transform 0.4s ease, opacity 0.4s ease;
-        position: relative;
-        z-index: 2000;
-    }
+/* Popup stabil */
+#popup {
+    background: #fff;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 450px;
+    padding: 25px;
+    box-shadow: 0 0 25px rgba(255, 64, 129, 0.5);
+    text-align: center;
+    position: relative;
+    font-family: 'Quicksand', sans-serif;
+    transform: translateY(0);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
 
-    #overlay.show #popup {
-        transform: scale(1);
-        opacity: 1;
-    }
+/* Hilangkan animasi popIn lama */
+#overlay.show #popup {
+    transform: scale(1);
+    opacity: 1;
+}
 
-    /* Tombol close */
-    .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        background: #ff4081;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
-        cursor: pointer;
-        line-height: 30px;
-        transition: 0.3s;
-    }
-    .close-btn:hover { background: #f50057; }
+/* Tombol close */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #ff4081;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 30px;
+    transition: 0.3s;
+}
+.close-btn:hover {
+    background: #f50057;
+}
 
-    /* Emoji terbang */
-    .emoji-fly {
-        position: fixed;
-        bottom: 0;
-        font-size: 25px;
-        animation: fly 3s linear forwards;
-        pointer-events: none;
-        z-index: 9999; /* 💥 emote di atas popup */
-    }
-
-    @keyframes fly {
-        from { transform: translateY(0) rotate(0deg); opacity: 1; }
-        to { transform: translateY(-500px) rotate(720deg); opacity: 0; }
-    }
-
+/* Emoji terbang */
+.emoji-fly {
+    position: fixed;
+    bottom: 0;
+    font-size: 25px;
+    animation: fly 3s linear forwards;
+    pointer-events: none;
+    z-index: 5;
+}
+@keyframes fly {
+    from { transform: translateY(0) rotate(0deg); opacity: 1; }
+    to { transform: translateY(-500px) rotate(720deg); opacity: 0; }
+}
     /* Responsif teks */
     @media (max-width: 400px) {
         h1 { font-size: 26px; }
         #popup p { font-size: 14px; }
     }
 </style>
-</head>
 
+<script>
+let emojiInterval;
+
+function bukaPopup() {
+    const overlay = document.getElementById('overlay');
+    overlay.style.display = 'flex';
+    overlay.classList.add('show');
+    
+    // Jalankan efek emote terbang tanpa ganggu popup
+    emojiInterval = setInterval(() => buatEmojiTerbang(), 400);
+}
+
+function tutupPopup() {
+    const overlay = document.getElementById('overlay');
+    overlay.classList.remove('show');
+    overlay.style.display = 'none';
+    clearInterval(emojiInterval);
+}
+
+function buatEmojiTerbang() {
+    const emojiArray = ['💖','🌸','🌼','✨','💫','🦋','🌈','😄','🥰','🌺','🍀','⭐'];
+    const emoji = document.createElement('div');
+    emoji.classList.add('emoji-fly');
+    emoji.innerText = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+    emoji.style.left = Math.random() * window.innerWidth + 'px';
+    emoji.style.fontSize = (Math.random() * 15 + 25) + 'px';
+    document.body.appendChild(emoji);
+    setTimeout(() => emoji.remove(), 3000);
+}
+</script>
+
+
+</head>
 <body>
-<h1>💌 Hai Putri Gina Kania Maharani 💌</h1>
+
+<h1>💫 Untuk Gina Kania Maharani! 💫</h1>
 
 <div class="card">
     <p class="emoji">🌼✨🌈</p>
@@ -187,54 +220,33 @@
     </div>
 </div>
 
-<!-- 🔊 Audio semangat -->
-<audio id="klikSound" preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bf7e5f1d8c.mp3?filename=pop-94319.mp3" type="audio/mpeg">
-</audio>
-
 <script>
 let emojiInterval;
 
 function bukaPopup() {
-    const overlay = document.getElementById('overlay');
-    const audio = document.getElementById('klikSound');
-
-    // tampilkan popup
-    overlay.style.display = 'flex';
-    overlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
-
-    // mainkan audio klik
-    try {
-        audio.volume = 0.7;
-        audio.currentTime = 0;
-        audio.play();
-    } catch (e) {
-        console.warn('Audio tidak bisa diputar otomatis:', e);
-    }
-
-    // emote terbang
-    emojiInterval = setInterval(() => buatEmojiTerbang(), 400);
+    document.getElementById('overlay').style.display = 'flex';
+    emojiInterval = setInterval(() => {
+        buatEmojiTerbang();
+    }, 300);
 }
 
 function tutupPopup() {
-    const overlay = document.getElementById('overlay');
-    overlay.classList.remove('show');
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
+    document.getElementById('overlay').style.display = 'none';
     clearInterval(emojiInterval);
 }
 
 function buatEmojiTerbang() {
-    const emojiArray = ['💖','🌸','🌼','✨','💫','🦋','🌈','😄','🥰','🌺','🍀','⭐','🎵','🌻','🧡','💌'];
+    const emojiArray = ['💖','🌸','🌼','✨','💫','🦋','🌈','😄','🥰','🌺','🍀','⭐'];
     const emoji = document.createElement('div');
     emoji.classList.add('emoji-fly');
     emoji.innerText = emojiArray[Math.floor(Math.random() * emojiArray.length)];
     emoji.style.left = Math.random() * window.innerWidth + 'px';
-    emoji.style.fontSize = (Math.random() * 15 + 25) + 'px';
+    emoji.style.bottom = '0px';
+    emoji.style.fontSize = (Math.random() * 20 + 25) + 'px';
     document.body.appendChild(emoji);
     setTimeout(() => emoji.remove(), 3000);
 }
 </script>
+
 </body>
 </html>
