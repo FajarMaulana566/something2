@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
+/* kode CSS kamu tetap sama persis seperti sebelumnya */
     body {
         background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
         font-family: 'Quicksand', sans-serif;
@@ -81,7 +82,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* pastikan setinggi layar penuh */
+    height: 100vh;
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
@@ -134,14 +135,14 @@
     background: #f50057;
 }
 
-/* Emoji terbang (di atas overlay) */
+/* Emoji terbang */
 .emoji-fly {
     position: fixed;
     bottom: 0;
     font-size: 25px;
     animation: fly 3s linear forwards;
     pointer-events: none;
-    z-index: 9999 !important; /* naikkan agar selalu di atas */
+    z-index: 9999 !important;
 }
 
 @keyframes fly {
@@ -154,8 +155,27 @@
     h1 { font-size: 26px; }
     #popup p { font-size: 14px; }
 }
-</style>
 
+/* 🎵 Tombol musik */
+.music-buttons {
+    margin-top: 20px;
+}
+.music-btn {
+    background: #ff80ab;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 18px;
+    margin: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.music-btn:hover {
+    background: #f50057;
+    transform: scale(1.05);
+}
+</style>
 </head>
 <body>
 
@@ -171,7 +191,13 @@
         Ingat, kamu bukan introvert, kamu cuma sedang 'loading keberanian' sedikit lebih lama 😉
     </p>
     <button class="button" id="semangatBtn" onclick="bukaPopup()">🎁 Dapatkan Semangat!</button>
-</div>      
+
+    <!-- 🎵 Tambahan tombol musik -->
+    <div class="music-buttons">
+        <button class="music-btn" onclick="toggleMusic('treasure')">🎶 Treasure - Paradise</button>
+        <button class="music-btn" onclick="toggleMusic('mood')">🎧 Mood</button>
+    </div>
+</div>
 
 <!-- Overlay dan Popup -->
 <div id="overlay">
@@ -191,7 +217,7 @@
     </div>
 </div>
 
-<!-- 🎵 Audio: backsound dan sound effect -->
+<!-- 🎵 Audio: backsound, sound effect, dan musik tambahan -->
 <audio id="backsound" loop preload="auto">
   <source src="https://cdn.pixabay.com/download/audio/2022/10/09/audio_79fdf0332d.mp3?filename=happiness-121940.mp3" type="audio/mpeg">
 </audio>
@@ -205,10 +231,35 @@
   <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_1ba0b68e9d.mp3?filename=pop-2-39222.mp3" type="audio/mpeg">
 </audio>
 
+<!-- 🎵 Audio Tambahan -->
+<audio id="treasure" loop preload="auto">
+  <source src="https://voca.ro/1fmW9FwBxKM6" type="audio/mpeg">
+</audio>
+<audio id="mood" loop preload="auto">
+  <source src="https://voca.ro/16ufaXeR0bJ0" type="audio/mpeg">
+</audio>
+
 <script>
 let emojiInterval;
 
-// Saat halaman dimulai, mainkan backsound setelah interaksi pertama
+// musik toggle
+function toggleMusic(id) {
+    const allMusic = ['treasure', 'mood'];
+    allMusic.forEach(m => {
+        const audio = document.getElementById(m);
+        if (m === id) {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        } else {
+            audio.pause();
+        }
+    });
+}
+
+// backsound & popup tetap seperti sebelumnya
 document.body.addEventListener('click', () => {
     const backsound = document.getElementById('backsound');
     backsound.volume = 0.5;
@@ -221,13 +272,12 @@ function bukaPopup() {
     const clickSound = document.getElementById('clickSound');
     const backsound = document.getElementById('backsound');
 
-    // mainkan backsound jika belum main
     if (backsound.paused) {
         backsound.volume = 0.4;
         backsound.play().catch(()=>{});
     }
 
-    clickSound.play(); // efek klik tombol
+    clickSound.play();
     setTimeout(() => popupSound.play(), 200);
 
     overlay.style.display = 'flex';
@@ -235,7 +285,6 @@ function bukaPopup() {
 
     emojiInterval = setInterval(() => buatEmojiTerbang(), 400);
 }
-
 
 function tutupPopup() {
     const overlay = document.getElementById('overlay');
@@ -256,7 +305,6 @@ function buatEmojiTerbang() {
     emoji.style.fontSize = (Math.random() * 15 + 25) + 'px';
     document.body.appendChild(emoji);
 
-    // mainkan efek pop kecil
     const emojiSound = document.getElementById('emojiSound');
     emojiSound.currentTime = 0;
     emojiSound.play();
