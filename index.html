@@ -80,16 +80,18 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100vh; /* pastikan setinggi layar penuh */
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 10;
     overflow: hidden;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
 }
+
 
 /* Popup */
 #popup {
@@ -139,8 +141,9 @@
     font-size: 25px;
     animation: fly 3s linear forwards;
     pointer-events: none;
-    z-index: 99; /* di atas overlay dan popup */
+    z-index: 9999 !important; /* naikkan agar selalu di atas */
 }
+
 @keyframes fly {
     from { transform: translateY(0) rotate(0deg); opacity: 1; }
     to { transform: translateY(-500px) rotate(720deg); opacity: 0; }
@@ -216,16 +219,23 @@ function bukaPopup() {
     const overlay = document.getElementById('overlay');
     const popupSound = document.getElementById('popupSound');
     const clickSound = document.getElementById('clickSound');
+    const backsound = document.getElementById('backsound');
+
+    // mainkan backsound jika belum main
+    if (backsound.paused) {
+        backsound.volume = 0.4;
+        backsound.play().catch(()=>{});
+    }
 
     clickSound.play(); // efek klik tombol
-    setTimeout(() => popupSound.play(), 200); // efek popup muncul
+    setTimeout(() => popupSound.play(), 200);
 
     overlay.style.display = 'flex';
     setTimeout(() => overlay.classList.add('show'), 10);
 
-    // Emoji terbang terus menerus
     emojiInterval = setInterval(() => buatEmojiTerbang(), 400);
 }
+
 
 function tutupPopup() {
     const overlay = document.getElementById('overlay');
